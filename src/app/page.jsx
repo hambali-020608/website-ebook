@@ -1,29 +1,30 @@
 'use client'
-import FetchBook from "@/actions/fetchBooks";
-import NavBar from "@/components/navbar";
+import AuthUser from "../lib/authUser";
+import FetchBook from "../actions/fetchBooks";
+import NavBar from "../components/navbar";
 import { useEffect, useState } from "react";
 
 
 export default function Home() {
 const [data,setData]=useState([])
+const [user,setUser] = useState(null)
 
 useEffect(()=>{
 async function fetchData(){
   const books = await FetchBook()
   setData(books.books)
+  const dataUser = await AuthUser()
+
+  setUser(dataUser)
 
 }
 fetchData()
 },[])
 
 
-
-
   return (
     <div className="">
-
-
-<NavBar/>
+<NavBar user={user}/>
 <section
   className="relative bg-[url('../images/image.png')] bg-cover bg-center bg-no-repeat"
 >
@@ -37,15 +38,12 @@ fetchData()
     <div className="max-w-xl text-center  ">
       <h1 className="text-3xl font-extrabold text-white sm:text-5xl">
         Let us find your
-
         <strong className="block font-extrabold text-rose-500 text-center"> Favorite Books. </strong>
       </h1>
-
       <p className="mt-4 max-w-lg text-white sm:text-xl/relaxed">
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt illo tenetur fuga ducimus
         numquam ea!
       </p>
-
       <div className="mt-8 flex flex-wrap gap-4 text-center justify-center">
         <a
           href="#"
@@ -53,7 +51,6 @@ fetchData()
         >
           Get Started
         </a>
-
         <a
           href="#"
           className="block w-full rounded bg-white px-12 py-3 text-sm font-medium text-rose-600 shadow hover:text-rose-700 focus:outline-none focus:ring active:text-rose-500 sm:w-auto"
@@ -70,7 +67,7 @@ fetchData()
   <section className="pt-5">
     <div className="grid grid-cols-4  gap-5">
       {data.map((book)=>{
-        console.log(book)
+        
         return(
           <a href="#" className="border-2 group relative block overflow-hidden">
           <button
@@ -124,9 +121,6 @@ fetchData()
         
         )
       })}
- 
-
-
 </div>
   </section>
 </main>
